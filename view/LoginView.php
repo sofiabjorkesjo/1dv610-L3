@@ -1,5 +1,12 @@
 <?php
 
+//alla post & get
+//kapsla in allt i get och set metoder
+//returnera det
+
+
+
+
 class LoginView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -12,13 +19,6 @@ class LoginView {
 
 	
 
-	/**
-	 * Create HTTP response
-	 *
-	 * Should be called after a login attempt has been determined
-	 *
-	 * @return  void BUT writes to standard output and cookies!
-	 */
 	public function response() {
 		$message = '';
 		
@@ -27,11 +27,7 @@ class LoginView {
 		return $response;
 	}
 
-	/**
-	* Generate HTML code on the output buffer for the logout button
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
+	
 	private function generateLogoutButtonHTML($message) {
 		return '
 			<form  method="post" >
@@ -41,11 +37,7 @@ class LoginView {
 		';
 	}
 	
-	/**
-	* Generate HTML code on the output buffer for the logout button
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
+	
 	private function generateLoginFormHTML($message) {
 		return '
 			<form method="post" > 
@@ -68,9 +60,5 @@ class LoginView {
 		';
 	}
 	
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName() {
-		//RETURN REQUEST VARIABLE: USERNAME
-	}
 	
 }
