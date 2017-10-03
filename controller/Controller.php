@@ -14,13 +14,25 @@ require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 
 class Controller{
-    public function start(){
-        $layoutView = new LayoutView();
-        $dateTimeView = new DateTimeView(); 
-        $loginView = new LoginView();
 
-        $layoutView->render(false, $loginView, $dateTimeView);
+    private $layoutView;
+    private $dateTimeView;
+    private $loginView;
 
-        //echo "hejhej";
+    public function showView(){
+        $this->layoutView = new LayoutView();
+        $this->dateTimeView = new DateTimeView(); 
+        $this->loginView = new LoginView();
+
+        $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
+        $this->isLoggedIn();
     }
+
+    public function isLoggedIn(){
+        if($this->loginView->submitForm()){
+            echo "yoyoy ";
+        }
+    }
+
+
 }

@@ -21,7 +21,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 $controller = new Controller();
-$controller->start();
+$controller->showView();
 
 //CREATE OBJECTS OF THE VIEWS
 // $v = new LoginView();

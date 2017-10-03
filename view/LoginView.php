@@ -3,7 +3,7 @@
 //alla post & get
 //kapsla in allt i get och set metoder
 //returnera det
-
+require_once('model/UserModel.php');
 
 
 
@@ -20,11 +20,20 @@ class LoginView {
 	
 
 	public function response() {
-		$message = '';
+		$message = 'sss';
 		
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
+		
+
+	}
+
+	public function submitForm(){
+		if(isset($_POST['LoginView::Login'])){
+			echo "hallå ";
+			$this->getUsername();
+		}
 	}
 
 	
@@ -59,6 +68,16 @@ class LoginView {
 			</form>
 		';
 	}
+
+	private function getUsername(){
+		$username = (isset($_POST['LoginView::UserName']) ? $_POST['LoginView::UserName'] : null);
+		echo "hej ";
+		echo $username;
+		//return $username;
+		return new UserModel($username);
+	}
+
+	
 	
 	
 }
