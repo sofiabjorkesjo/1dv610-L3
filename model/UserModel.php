@@ -4,57 +4,73 @@ class UserModel{
     
     private $username;
     private $password;
+    private $message;
     
     public function __construct(){
-   
+        if($this->checkLogIn()){
+            echo "checked";
+        }
     }
 
     public function setUsername($username){
-        $this->username = $username;
-        echo "set ";
-        echo $username;
+        $this->username = $username; 
+        return $username;
     }
 
-    public function usernameOk($username){
-        if($username == "Admin"){
-            $_SESSION['username'] = $username;
-           // $_SESSION['password'] = $password;
-            //byta vy
-            echo "yoyoyo";
-            return true;
-        } else {
-           return false;
-        }
+    public function setPassword($password){
+        $this->password = $password;
+        return $password;
     }
 
-    public function succesfullLoggedIn(){
-        if($_SESSION['username'] && $_SESSION['password']){
-            echo "logged in ";
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function usernameNotOk(){
-        if($this->emptyFields()){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function emptyFields(){
+    public function emtyFields(){
         if($this->username == "" && $this->password == ""){
-            echo "uuu";
+            echo "empty";
             return true;
         } else {
             return false;
         }
     }
 
+    public function correctUsernameAndPassword(){
+        if($this->username == "Admin" && $this->password == "Password"){
+            echo "yyaaaaay ";
+            $_SESSION['username'] = $this->username;
+            $_SESSION['password'] = $this->password;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    //kolla alla use case för användarnamnet
+    public function checkLogIn(){
+        if ($this->correctUsernameAndPassword()){
+            //set message
+            echo "yo";
+            $this->userLoggedIn();
+        } else if ($this->emtyFields()){
+            echo "oo";
+            //set message;
+        }
+    }
+
+    public function userLoggedIn(){
+        if($_SESSION['username']){
+            echo " wowo ";
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //kollar alla värden
+    //funktion för om de är OK = inloggad
+    //funktion för om ej ok = ej inloggad
+
+
+
+    
+
+  
 
 
 }

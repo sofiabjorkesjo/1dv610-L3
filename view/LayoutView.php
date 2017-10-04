@@ -2,8 +2,11 @@
 
 
 class LayoutView {
+
+  private $loggedIn;
   
-  public function render($isLoggedIn, LoginView $loginView,  DateTimeView $dateTimeView) {
+  
+  public function render($isLoggedIn, LoginView $loginView, $body,  DateTimeView $dateTimeView) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -15,7 +18,8 @@ class LayoutView {
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
           
           <div class="container">
-              ' . $loginView->response() . '
+              '. $body .'
+  
               
               ' . $dateTimeView->show() . '
           </div>
@@ -26,10 +30,14 @@ class LayoutView {
   
   private function renderIsLoggedIn($isLoggedIn) {
     if ($isLoggedIn) {
-      return '<h2>Logged in</h2>';
+      return '<h2>Logged in</h2> 
+      <div class="container">'  
+      . $loginView->generateLogoutButtonHTML($message);
     }
     else {
       return '<h2>Not logged in</h2>';
     }
   }
+
+
 }
