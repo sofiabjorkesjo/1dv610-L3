@@ -17,10 +17,16 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
-	
+
+
+	public function __construct(){
+
+	}
 
 	public function response() {
-		$message = 'sss';
+		$message = "w";
+		$this->setMessage($message);
+		
 		
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
@@ -31,9 +37,14 @@ class LoginView {
 
 	public function submitForm(){
 		if(isset($_POST['LoginView::Login'])){
-			echo "hallå ";
-			$this->getUsername();
+			return true;
+		} else {
+			return false;
 		}
+	}
+
+	public function setMessage($message){
+		return $message;
 	}
 
 	
@@ -69,12 +80,14 @@ class LoginView {
 		';
 	}
 
-	private function getUsername(){
+	public function getUsername(){
 		$username = (isset($_POST['LoginView::UserName']) ? $_POST['LoginView::UserName'] : null);
-		echo "hej ";
-		echo $username;
-		//return $username;
-		return new UserModel($username);
+		return $username;
+	}
+
+	private function getPassword(){
+		$password = (isset($_POST['LoginView::Password']]) ? $_POST['LoginView::Password']] : null);
+		return $password;
 	}
 
 	

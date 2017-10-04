@@ -12,12 +12,14 @@
 require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
+require_once('model/UserModel.php');
 
 class Controller{
 
     private $layoutView;
     private $dateTimeView;
     private $loginView;
+    private $userModel;
 
     public function showView(){
         $this->layoutView = new LayoutView();
@@ -25,12 +27,20 @@ class Controller{
         $this->loginView = new LoginView();
 
         $this->layoutView->render(false, $this->loginView, $this->dateTimeView);
+        $this->loginView->setMessage("hejhej"); 
         $this->isLoggedIn();
     }
 
     public function isLoggedIn(){
         if($this->loginView->submitForm()){
-            echo "yoyoy ";
+            $username = $this->loginView->getUsername();
+            $this->userModel = new UserModel();
+            $this->userModel->setUsername($username);
+            //modellen . setUsername($username);
+           // echo "yoyoy ";
+            //$this->loginView->getUsername();
+           // $this->
+            
         }
     }
 
