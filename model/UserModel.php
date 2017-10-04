@@ -42,19 +42,10 @@ class UserModel{
         }
     }
 
-    public function checkLogIn(){
-        if ($this->correctUsernameAndPassword()){
-            //set message
-            echo "yo";
-            $this->userLoggedIn();
-        } else if ($this->emtyFields()){
-            echo "oo";
-            //set message;
-        }
-    }
+   
 
     public function userLoggedIn(){
-        if($_SESSION['username']){
+        if(isset($_SESSION['username'])){
             echo " wowo ";
             return true;
         } else {
