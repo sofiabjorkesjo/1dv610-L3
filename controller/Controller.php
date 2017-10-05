@@ -33,16 +33,20 @@ class Controller{
 
     public function showView(){
        $this->body = $this->setBody();        
-        $this->layoutView->render(false, $this->loginView, $this->body, $this->dateTimeView);
-        $this->logIn();
+       $this->layoutView->render(false, $this->loginView, $this->body, $this->dateTimeView);
+       $this->logIn();
     }
 
     public function setBody(){
-        $message = "";
-        $this->body = $this->loginView->generateLoginFormHTML($message);
-        //FIXA SÅ DE ÄR NÄR MAN ÄR INLOGGAD !!
+        $this->body = $this->loginView->generateLoginFormHTML();
         if($this->logIn()){
-                $this->body = $this->loginView->generateLogoutButtonHTML($message);             
+            $message = $this->userModel->getMessage();
+            $this->loginView->setMessage($message);
+            $this->body = $this->loginView->generateLogoutButtonHTML();             
+        } else if($this->logIn() == false) {
+            $message = $this->userModel->getMessage();
+            $this->loginView->setMessage($message);
+            $this->body = $this->loginView->generateLoginFormHTML();
         }
         return $this->body;
     }
@@ -54,34 +58,28 @@ class Controller{
             
             $this->userModel->setUsername($username); 
             $this->userModel->setPassword($password);
-            //if fields ej ok = ej inloggad
-            //annars inloggad
-            //kolla om användar stämmer -> loggas in
-            //ej stämmer -> ej loggas in
-            //$this->isLoggedIn();
+          
             if($this->userModel->correctUsernameAndPassword()){
                 return true;  
+            } else if($this->notCorrectLogIn()){
+                return false;
             }   
                
         } 
     }
 
-    public function test(){
-        if($this->loginView->submitForm()){
-            echo "heehhehe";
-            if($this->userModel->userLoggedIn()){
-                echo "rororooror";
-                return true;
-            }
+    public function notCorrectLogIn(){
+        if($this->userModel->emtyFields() || $this->userModel->emptyPasswordField() || $this->userModel->wrongNameOrPassword()){
+            return true;
+        } else {
+            return false;
         }
     }
 
-  
+    
 
-    // public function loggedIn(){      
-    //     echo " mm ";
-    //     return true;
-    // } 
+   
+
 
    
 

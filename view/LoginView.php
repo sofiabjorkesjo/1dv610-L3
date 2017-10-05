@@ -24,10 +24,8 @@ class LoginView {
 
 	public function setMessage($message){
 		$this->message = $message;
-		echo " !? ";
+		echo "hej ";
 		echo $message;
-		echo " 4 ";
-		return $message;
 	}
 
 	// public function response(){
@@ -76,22 +74,22 @@ class LoginView {
 		}
 	}
 	
-	public function generateLogoutButtonHTML($message) {
+	public function generateLogoutButtonHTML() {
 		return '
 			<form  method="post" >
-				<p id="' . self::$messageId . '">' . $message .'</p>
+				<p id="' . self::$messageId . '">' . $this->message .'</p>
 				<input type="submit" name="' . self::$logout . '" value="logout"/>
 			</form>
 		';
 	}
 	
 	
-	public function generateLoginFormHTML($message) {
+	public function generateLoginFormHTML() {
 		return '
 			<form method="post" > 
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
-					<p id="' . self::$messageId . '">' . $message . '</p>
+					<p id="' . self::$messageId . '">' . $this->message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
 					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
