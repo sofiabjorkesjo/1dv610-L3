@@ -56,13 +56,10 @@ class UserModel{
         }
     }
 
-   //kolla denn sessionen inloggad i controller
     public function userLoggedIn(){
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
-            echo " wowo ";
             return true;
         } else {
-            echo "blä";
             return false;
         }
     }
@@ -75,6 +72,12 @@ class UserModel{
         if(!isset($_SESSION["loggedIn"])){
             return $_SESSION["loggedIn"] = "logged in";     
         }
+    }
+
+    public function loggOutUser(){
+        session_unset("username");
+        session_unset("password");
+        session_unset("loggedIn");
     }
 
     

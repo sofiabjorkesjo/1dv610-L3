@@ -52,6 +52,9 @@ class Controller{
             $message = $this->userModel->getMessage();
             $this->loginView->setMessage($message);
             $this->body = $this->loginView->generateLoginFormHTML();
+        } 
+        if($this->logOut()){
+            $this->body = $this->loginView->generateLoginFormHTML();
         }  
         return $this->body;
     }
@@ -66,7 +69,6 @@ class Controller{
             if($this->userModel->correctUsernameAndPassword()){
                 return true;  
             } else if($this->notCorrectLogIn()){
-                echo " false ";
                 return false;
             }   
                
@@ -75,6 +77,15 @@ class Controller{
 
     public function notCorrectLogIn(){
         if($this->userModel->emtyFields() || $this->userModel->emptyPasswordField() || $this->userModel->wrongNameOrPassword()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function logOut(){
+        if($this->loginView->clickLogOut()){
+            $this->userModel->loggOutUser();
             return true;
         } else {
             return false;
