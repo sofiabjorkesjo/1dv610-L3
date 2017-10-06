@@ -5,6 +5,9 @@ class UserModel{
     private $username;
     private $password;
     private $message;
+    private $usernameRegister;
+    private $passwordRegister;
+    private $passwordRepeat;
     
     public function __construct(){
        
@@ -78,6 +81,22 @@ class UserModel{
         session_unset("username");
         session_unset("password");
         session_unset("loggedIn");
+    }
+
+    public function emtypFieldsRegister(){
+
+    }
+
+    public function setRegisterUsername($usernameRegister){
+        $this->usernameRegister = $usernameRegister;
+    }
+
+    public function setRegisterPassword($passwordRegister){
+        $this->passwordRegister = $passwordRegister;
+    }
+
+    public function setPasswordRepeat($passwordRepeat){
+        $this->passwordRepeat = $passwordRepeat;
     }
 
     

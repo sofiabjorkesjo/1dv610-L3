@@ -46,7 +46,7 @@ class Controller{
        $this->logIn();
     }
 
-    public function showLink(){
+    public function showLink(){ 
         if($this->loginView->clickRegisterLink()){
             //Sätt länknamnet här
         }
@@ -108,6 +108,18 @@ class Controller{
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function register(){
+        if($this->registerView->clickRegister()){
+            $usernameRegister = $this->registerView->getUsernameRegister();
+            $passwordRegister = $this->registerView->getPasswordRegister();
+            $passwordRepeat = $this->registerView->getPasswordRepeat();
+            $this->registerView->setUsernameRegister($username);
+            $this->registerView->setPasswordRegister($passwordRegister);
+            $this->registerView->setPasswordRepeat($passwordRepeat);
+            //fortsätt här
         }
     }
 

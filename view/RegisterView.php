@@ -26,6 +26,14 @@ class RegisterView {
         }   
     }
 
+    public function clickRegister(){
+        if(isset($_POST["RegisterView::Register"])){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
 	* Generate HTML code for register form
 	* @param $message, String output message
@@ -54,5 +62,20 @@ class RegisterView {
                 </fieldset>
                 </form>			
         ';
+    }
+
+    public function getUsernameRegister(){
+        $username =  (isset($_POST["RegisterView::UserName"]) ? $_POST["RegisterView::UserName"] : null);
+        return $username;	
+    }
+
+    public function getPasswordRegister(){
+        $password =  (isset($_POST["RegisterView::Password"]) ? $_POST["RegisterView::Password"] : null);
+        return $password;
+    }
+
+    public function getPasswordRepeat(){
+        $passwordRepeat = (isset($_POST["RegisterView::PasswordRepeat"]) ? $_POST["RegisterView::PasswordRepeat"] : null);
+        return $passwordRepeat;
     }
 }
