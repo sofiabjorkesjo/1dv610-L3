@@ -37,31 +37,36 @@ class Controller{
        $this->logIn();
     }
 
-    public function setBody(){
+    public function setBody(){     
         $this->body = $this->loginView->generateLoginFormHTML();
         if($this->logIn()){
-            $message = $this->userModel->getMessage();
-            $this->loginView->setMessage($message);
-            $this->body = $this->loginView->generateLogoutButtonHTML();             
+            //FIXA PÅ ANNAT SÄTT??
+            if($this->userModel->ifSetMessage()){
+                $message = $this->userModel->getMessage();
+                $this->loginView->setMessage($message);
+            }      
+            $this->body = $this->loginView->generateLogoutButtonHTML();
+        } else if ($this->userModel->userLoggedIn()){ 
+            $this->body = $this->loginView->generateLogoutButtonHTML();
         } else if($this->logIn() == false) {
             $message = $this->userModel->getMessage();
             $this->loginView->setMessage($message);
             $this->body = $this->loginView->generateLoginFormHTML();
-        }
+        }  
         return $this->body;
     }
 
     public function logIn(){
         if($this->loginView->submitForm()){
             $username = $this->loginView->getUsername();
-            $password = $this->loginView->getPassword();
-            
+            $password = $this->loginView->getPassword();   
             $this->userModel->setUsername($username); 
             $this->userModel->setPassword($password);
-          
+
             if($this->userModel->correctUsernameAndPassword()){
                 return true;  
             } else if($this->notCorrectLogIn()){
+                echo " false ";
                 return false;
             }   
                

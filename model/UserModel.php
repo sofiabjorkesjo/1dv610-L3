@@ -47,10 +47,9 @@ class UserModel{
 
     public function correctUsernameAndPassword(){
         if($this->username == "Admin" && $this->password == "Password"){
-            echo "yyaaaaay ";
             $this->message = "welcome";
-            $_SESSION["username"] = $this->username;
-            $_SESSION["password"] = $this->password;
+            $_SESSION['username'] = $this->username;
+            $_SESSION['password'] = $this->password;
             return true;
         } else {
             return false;
@@ -59,10 +58,11 @@ class UserModel{
 
    //kolla denn sessionen inloggad i controller
     public function userLoggedIn(){
-        if(isset($_SESSION["username"])){
+        if(isset($_SESSION['username']) && isset($_SESSION['password'])){
             echo " wowo ";
             return true;
         } else {
+            echo "blä";
             return false;
         }
     }
@@ -71,9 +71,13 @@ class UserModel{
         return $this->message;
     }
 
-    //kollar alla värden
-    //funktion för om de är OK = inloggad
-    //funktion för om ej ok = ej inloggad
+    public function ifSetMessage(){
+        if(!isset($_SESSION["loggedIn"])){
+            return $_SESSION["loggedIn"] = "logged in";     
+        }
+    }
+
+    
 
 
 
