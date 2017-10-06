@@ -31,10 +31,8 @@ class LayoutView {
   private function renderIsLoggedIn($isLoggedIn) {
     if ($isLoggedIn) {
       return '<h2>Logged in</h2> 
-      <div class="container">'  
-      . $loginView->generateLogoutButtonHTML($message);
-    }
-    else {
+      <div class="container">' ; 
+    } else {
       return '<h2>Not logged in</h2>';
     }
   }

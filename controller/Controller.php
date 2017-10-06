@@ -32,8 +32,12 @@ class Controller{
     }
 
     public function showView(){
-       $this->body = $this->setBody();        
-       $this->layoutView->render(false, $this->loginView, $this->body, $this->dateTimeView);
+       $this->body = $this->setBody();
+       if($this->body == $this->loginView->generateLogoutButtonHTML()){
+            $this->layoutView->render(true, $this->loginView, $this->body, $this->dateTimeView);
+       } else {
+            $this->layoutView->render(false, $this->loginView, $this->body, $this->dateTimeView);
+       }            
        $this->logIn();
     }
 
