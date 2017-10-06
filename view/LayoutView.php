@@ -14,13 +14,12 @@ class LayoutView {
           <title>Login Example</title>
         </head>
         <body>
-          <h1>Assignment 2</h1>
+          <h1>Assignment 3</h1>
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
-          
+          ' . $loginView->showLinkRegister() . '
           <div class="container">
-              '. $body .'
-  
-              
+     
+              '. $body .'    
               ' . $dateTimeView->show() . '
           </div>
          </body>

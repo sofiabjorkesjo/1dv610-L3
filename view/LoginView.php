@@ -17,6 +17,8 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 	private $message;
+	public static $linkName = 'Register a new user';
+
 
 	public function __construct(){
 	
@@ -29,6 +31,31 @@ class LoginView {
 
 	public function submitForm(){
 		if(isset($_POST['LoginView::Login'])){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function showLink(){
+
+		if (isset($_GET['register'])){
+			$registerView = new RegisterView();
+			return $registerView->showLinkBack();			
+		} else {	
+			return $this->showLinkRegister();
+		}
+		
+	}
+
+	public function showLinkRegister(){
+		return '
+		<a href="?register">' . self::$linkName . '</a>
+		';
+	}
+
+	public function clickRegisterLink(){
+		if(isset($_GET["register"])){
 			return true;
 		} else {
 			return false;

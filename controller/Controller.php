@@ -12,6 +12,7 @@
 require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
+require_once('view/RegisterView.php');
 require_once('model/UserModel.php');
 
 class Controller{
@@ -19,26 +20,36 @@ class Controller{
     private $layoutView;
     private $dateTimeView;
     private $loginView;
+    private $registerView;
     private $userModel;
     private $test;
     private $body;
+    private $link;
 
     public function __construct(){
         $this->layoutView = new LayoutView();
         $this->dateTimeView = new DateTimeView(); 
         $this->loginView = new LoginView();
         $this->userModel = new UserModel();
+        $this->registerView = new RegisterView();
        
     }
 
     public function showView(){
        $this->body = $this->setBody();
+       $this->link = $this->showLink();
        if($this->body == $this->loginView->generateLogoutButtonHTML()){
-            $this->layoutView->render(true, $this->loginView, $this->body, $this->dateTimeView);
+            $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->dateTimeView);
        } else {
             $this->layoutView->render(false, $this->loginView, $this->body, $this->dateTimeView);
        }            
        $this->logIn();
+    }
+
+    public function showLink(){
+        if($this->loginView->clickRegisterLink()){
+            //Sätt länknamnet här
+        }
     }
 
     public function setBody(){     
@@ -59,6 +70,10 @@ class Controller{
         } 
         if($this->logOut()){
             $this->body = $this->loginView->generateLoginFormHTML();
+        }
+        if($this->loginView->clickRegisterLink()){
+            $this->body = $this->registerView->generateRegisterForm();
+
         }  
         return $this->body;
     }
