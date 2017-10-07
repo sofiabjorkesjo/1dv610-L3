@@ -2,12 +2,13 @@
 
 
 class RegisterView {
-    private static $message = "RegisterView::Message";
+
     private static $username = "RegisterView::UserName";
     private static $password = "RegisterView::Password";
     private static $repeatPassword = "RegisterView::PasswordRepeat";
     private static $registration = "RegisterView::Register";
     private static $link = "Back to login";
+    private $message;
     //private $message;
 
 
@@ -34,6 +35,10 @@ class RegisterView {
         }
     }
 
+    public function setMessageRegister($message){
+        $this->message = $message;
+    }
+
     /**
 	* Generate HTML code for register form
 	* @param $message, String output message
@@ -41,13 +46,12 @@ class RegisterView {
 	*/
 
     public function generateRegisterForm(){
-        $message = "";
         return '
         <h2>Register new user</h2>
         <form action="?register" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend>Register a new user - Write username and password</legend>
-                <p id="' . self::$message . '">' . $message . '</p>
+                <p id="' . $this->message . '">' . $this->message . '</p>
                 <label for="' . self::$username . '">Username :</label>
                 <input type="text" size="20" name="' . self::$username . '" id="' . self::$username .'" value="' . $this->setValue  () .'">
                 <br>

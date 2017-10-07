@@ -74,6 +74,11 @@ class Controller{
         if($this->loginView->clickRegisterLink()){
             $this->body = $this->registerView->generateRegisterForm();
 
+        }
+        if($this->register() == false){
+            $message = $this->userModel->getMessage();
+            $this->registerView->setMessageRegister($message);
+            $this->body = $this->registerView->generateRegisterForm();
         }  
         return $this->body;
     }
@@ -116,10 +121,22 @@ class Controller{
             $usernameRegister = $this->registerView->getUsernameRegister();
             $passwordRegister = $this->registerView->getPasswordRegister();
             $passwordRepeat = $this->registerView->getPasswordRepeat();
-            $this->registerView->setUsernameRegister($username);
-            $this->registerView->setPasswordRegister($passwordRegister);
-            $this->registerView->setPasswordRepeat($passwordRepeat);
-            //fortsätt här
+            $this->userModel->setRegisterUsername($usernameRegister);
+            $this->userModel->setRegisterPassword($passwordRegister);
+            $this->userModel->setPasswordRepeat($passwordRepeat);
+
+            if($this->registerNotOk()){
+                return false;
+            }
+        }
+    }
+
+    public function registerNotOk(){
+        if($this->userModel->emtypFieldsRegister() || $this->userModel->emptyPasswordRegister() || $this->userModel->shortUsername() || $this->userModel->shortPassword() ||
+        $this->userModel->notOkPasswordRepeat() || $this->userModel->userExist() || $this->userModel->checkForTags()){
+            return true;
+        } else {
+            return false;
         }
     }
 
