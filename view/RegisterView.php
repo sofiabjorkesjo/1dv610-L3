@@ -7,9 +7,9 @@ class RegisterView {
     private static $password = "RegisterView::Password";
     private static $repeatPassword = "RegisterView::PasswordRepeat";
     private static $registration = "RegisterView::Register";
+    private static $messageId = "RegisterView::Message";
     private static $link = "Back to login";
     private $message;
-    //private $message;
 
 
     public function showLinkBack(){
@@ -47,11 +47,12 @@ class RegisterView {
 
     public function generateRegisterForm(){
         return '
+        
         <h2>Register new user</h2>
         <form action="?register" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend>Register a new user - Write username and password</legend>
-                <p id="' . $this->message . '">' . $this->message . '</p>
+                <p id="' . self::$messageId  . '">' . $this->message . '</p>
                 <label for="' . self::$username . '">Username :</label>
                 <input type="text" size="20" name="' . self::$username . '" id="' . self::$username .'" value="' . $this->setValue  () .'">
                 <br>

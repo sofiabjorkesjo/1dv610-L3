@@ -39,6 +39,15 @@ class UserModel{
         }
     }
 
+    public function emptyUsername(){
+        if($this->username == "" && $this->password == "Password"){
+            $this->message = "Username is missing";
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function wrongNameOrPassword(){
         if($this->username == "Admin" && $this->password != "Password" || $this->username != "Admin" && $this->password == "Password") {
             $this->message = "Wrong name or password";
@@ -50,7 +59,7 @@ class UserModel{
 
     public function correctUsernameAndPassword(){
         if($this->username == "Admin" && $this->password == "Password"){
-            $this->message = "welcome";
+            $this->message = "Welcome";
             $_SESSION['username'] = $this->username;
             $_SESSION['password'] = $this->password;
             return true;
@@ -61,6 +70,7 @@ class UserModel{
 
     public function userLoggedIn(){
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+            session_unset("loggedIn");
             return true;
         } else {
             return false;
@@ -71,16 +81,24 @@ class UserModel{
         return $this->message;
     }
 
-    public function ifSetMessage(){
+    public function ifSetMessageLogIn(){
         if(!isset($_SESSION["loggedIn"])){
             return $_SESSION["loggedIn"] = "logged in";     
         }
     }
 
+    public function ifSetMessageLogOut(){
+        if(!isset($_SESSION["loggedOut"])){
+            return $_SESSION["loggedOut"] = "logged out";
+        }
+    }
+
     public function loggOutUser(){
+        $this->message = "Bye bye!";
         session_unset("username");
         session_unset("password");
         session_unset("loggedIn");
+        return true;
     }
 
     
@@ -107,7 +125,7 @@ class UserModel{
 
     public function emtypFieldsRegister(){
         if($this->usernameRegister == "" && $this->passwordRegister == "" && $this->passwordRepeat == ""){
-            $this->message = "Username has too few characters, at least 3 characters. Password has too few characters, at least 6 characters";
+            $this->message = "Username has too few characters, at least 3 characters. <br> Password has too few characters, at least 6 characters.";
             return true;
         } else {
             return false;
@@ -167,6 +185,13 @@ class UserModel{
             return false;
         }
     }
+
+    public function setCookieMessage(){
+            $this->message = "Welcome and you will be remembered";
+        
+    }
+
+
 
     
 

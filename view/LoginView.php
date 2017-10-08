@@ -37,16 +37,14 @@ class LoginView {
 		}
 	}
 
-	public function showLink(){
-
-		if (isset($_GET['register'])){
-			$registerView = new RegisterView();
-			return $registerView->showLinkBack();			
-		} else {	
-			return $this->showLinkRegister();
-		}
-		
-	}
+	public function setValue(){
+        if(isset($_POST['LoginView::UserName'])){
+            $value = $_POST['LoginView::UserName'];
+            return $value;
+        } else {
+            return "";
+        }   
+    }
 
 	public function showLinkRegister(){
 		return '
@@ -82,13 +80,14 @@ class LoginView {
 	
 	public function generateLoginFormHTML() {
 		return '
+		
 			<form method="post" > 
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $this->message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' .$this->setValue() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -111,6 +110,27 @@ class LoginView {
 		$password = (isset($_POST['LoginView::Password']) ? $_POST['LoginView::Password'] : null);
 		return $password;
 	}
+
+	public function keepMeLoggedIn(){
+		if(isset($_POST['LoginView::KeepMeLoggedIn'])){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function setCookie(){
+		if(!isset($_COOKIE["LoginView::CookieName"]) && !isset($_COOKIE["LoginView::CookiePassword"])){
+			$cookie_name = "LoginView::CookieName";
+			$cookie_value = "Admin";
+			$name = "LoginView::CookiePassword";
+			$value = hash('ripemd160', 'Password');
+			setcookie($name, $value, time() + 12360, "/");
+			setcookie($cookie_name, $cookie_value, time() + 12360, "/");
+		}
+	}
+
+
 
 	
 	

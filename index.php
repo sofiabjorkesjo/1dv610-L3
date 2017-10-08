@@ -23,7 +23,11 @@ ini_set('display_errors', 'On');
 session_start();
 
 $controller = new Controller();
+
+
+
 $controller->showView();
+
 
 //CREATE OBJECTS OF THE VIEWS
 // $v = new LoginView();
