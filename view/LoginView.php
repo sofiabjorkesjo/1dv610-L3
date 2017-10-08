@@ -130,6 +130,21 @@ class LoginView {
 		}
 	}
 
+	public function checkCookie(){
+		if (isset($_COOKIE["LoginView::CookieName"]) && isset($_COOKIE["LoginView::CookiePassword"])){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function unsetCookie(){
+		if(isset($_COOKIE["LoginView::CookieName"]) && isset($_COOKIE["LoginView::CookiePassword"])){
+			setcookie("LoginView::CookiePassword", hash('ripemd160', 'Password'), time() - 12360, "/");
+			setcookie("LoginView::CookieName", "Admin", time() - 12360, "/");
+		}
+	}
+
 
 
 	

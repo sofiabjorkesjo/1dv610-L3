@@ -49,11 +49,17 @@ class Controller{
     public function setBody(){  
         $this->link = $this->loginView->showLinkRegister();   
         $this->body = $this->loginView->generateLoginFormHTML();
+  
         if($this->logInCookie()){
             $this->userModel->setCookieMessage();
             $message = $this->userModel->getMessage();
             $this->loginView->setMessage($message);
 
+            $this->body = $this->loginView->generateLogoutButtonHTML();
+        } else if($this->stayLoggedInCookie()){
+            $this->userModel->setSession();
+            $message = $this->userModel->getMessage();
+            $this->loginView->setMessage($message);
             $this->body = $this->loginView->generateLogoutButtonHTML();
         } else if($this->logIn()){
             //FIXA PÅ ANNAT SÄTT?
@@ -73,12 +79,13 @@ class Controller{
         if($this->logOut()){
             //FIXA PÅ ANNAT SÄTT?
             if($this->userModel->ifSetMessageLogOut()){
-                var_dump($_SESSION);
-                echo "8383838";
+                
                 $message = $this->userModel->getMessage();
                 $this->loginView->setMessage($message);
-            }   
+            }
+            $this->loginView->unsetCookie();   
             $this->link = $this->loginView->showLinkRegister(); 
+
             $this->body = $this->loginView->generateLoginFormHTML();
         }
         if($this->loginView->clickRegisterLink()){
@@ -128,18 +135,18 @@ class Controller{
             }
 
         }
-
-        // if($this->loginView->keepMeLoggedIn()){
-        //     echo "hdhdhd";
-        //     $this->loginView->setCookie();
-        //    // $this->userModel->setCookieMessage();
-        //    $message = $this->userModel->getMessage();
-        //    $this->loginView->setMessage($message);
-        //    echo "fjfjfj";
-        //     //kalla på funktion i vyn som sätter cookies
-        //     //return true också ? 
-        // }
     }
+
+        public function stayLoggedInCookie(){
+            if($this->loginView->checkCookie() && $this->userModel->checkSession()){
+                $this->userModel->setSession();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+     
 
     public function notCorrectLogIn(){
         if($this->userModel->emtyFields() || $this->userModel->emptyPasswordField() || $this->userModel->emptyUsername()||$this->userModel->wrongNameOrPassword()){

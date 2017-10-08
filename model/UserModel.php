@@ -191,6 +191,23 @@ class UserModel{
         
     }
 
+    public function checkSession(){
+        if(!isset($_SESSION["username"]) && !isset($_SESSION["password"])){
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setSession(){
+        if(!isset($_SESSION["username"]) && !isset($_SESSION["password"])){
+            $_SESSION["username"] = "Admin";
+            $_SESSION["password"] = "Password";
+            $this->message = "Welcome back with cookie";
+        }
+    }
+
 
 
     
