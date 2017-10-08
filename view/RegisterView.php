@@ -12,30 +12,21 @@ class RegisterView {
     private $message;
 
 
-    public function showLinkBack(){
+    public function showLinkBack() {
         return '
         <a href="?">' . self::$link . '</a>
         ';
     }
 
-    public function setValue(){
-        if(isset($_POST['RegisterView::UserName'])){
-            $value = $_POST['RegisterView::UserName'];
-            return strip_tags($value);
-        } else {
-            return "";
-        }   
-    }
-
-    public function clickRegister(){
-        if(isset($_POST["RegisterView::Register"])){
+    public function clickRegister() {
+        if(isset($_POST["RegisterView::Register"])) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function setMessageRegister($message){
+    public function setMessageRegister($message) {
         $this->message = $message;
     }
 
@@ -45,9 +36,8 @@ class RegisterView {
 	* @return  void, BUT writes to standard output!
 	*/
 
-    public function generateRegisterForm(){
-        return '
-        
+    public function generateRegisterForm() {
+        return '   
         <h2>Register new user</h2>
         <form action="?register" method="post" enctype="multipart/form-data">
             <fieldset>
@@ -69,18 +59,27 @@ class RegisterView {
         ';
     }
 
-    public function getUsernameRegister(){
+    public function getUsernameRegister() {
         $username =  (isset($_POST["RegisterView::UserName"]) ? $_POST["RegisterView::UserName"] : null);
         return $username;	
     }
 
-    public function getPasswordRegister(){
+    public function getPasswordRegister() {
         $password =  (isset($_POST["RegisterView::Password"]) ? $_POST["RegisterView::Password"] : null);
         return $password;
     }
 
-    public function getPasswordRepeat(){
+    public function getPasswordRepeat() {
         $passwordRepeat = (isset($_POST["RegisterView::PasswordRepeat"]) ? $_POST["RegisterView::PasswordRepeat"] : null);
         return $passwordRepeat;
+    }
+
+    private function setValue() {
+        if(isset($_POST['RegisterView::UserName'])) {
+            $value = $_POST['RegisterView::UserName'];
+            return strip_tags($value);
+        } else {
+            return "";
+        }   
     }
 }

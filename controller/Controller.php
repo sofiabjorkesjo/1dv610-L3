@@ -1,14 +1,5 @@
 <?php 
 
-//skapa vyer och modeller
-//fråga vyn om man postat
-//vyn svarar ja eller nej
-//om nej, händer inget
-//om ja, fråga modellen om reglerna stämmer
-//svarar ja eller nej
-//om ja visa en annan vy
-//om nej, kasta felmeddelande / exception
-
 require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
@@ -22,112 +13,124 @@ class Controller{
     private $loginView;
     private $registerView;
     private $userModel;
-    private $test;
     private $body;
     private $link;
 
-    public function __construct(){
+    public function __construct() {
         $this->layoutView = new LayoutView();
         $this->dateTimeView = new DateTimeView(); 
         $this->loginView = new LoginView();
         $this->userModel = new UserModel();
-        $this->registerView = new RegisterView();
-       
+        $this->registerView = new RegisterView();    
     }
 
-    public function showView(){
+    public function showView() {
        $this->body = $this->setBody();
-       if($this->body == $this->loginView->generateLogoutButtonHTML()){
+       if($this->body == $this->loginView->generateLogoutButtonHTML()) {
             $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->dateTimeView);
        } else {
             $this->layoutView->render(false, $this->loginView, $this->body, $this->link,  $this->dateTimeView);
        }
-       //$this->setUsernameAndPassword();            
-       //$this->logIn();
     }
 
-    public function setBody(){  
+    private function setBody() {  
         $this->link = $this->loginView->showLinkRegister();   
         $this->body = $this->loginView->generateLoginFormHTML();
   
-        if($this->logInCookie()){
-            $this->userModel->setCookieMessage();
-            $message = $this->userModel->getMessage();
-            $this->loginView->setMessage($message);
-
-            $this->body = $this->loginView->generateLogoutButtonHTML();
-        } else if($this->stayLoggedInCookie()){
-            $this->userModel->setSession();
-            $message = $this->userModel->getMessage();
-            $this->loginView->setMessage($message);
-            $this->body = $this->loginView->generateLogoutButtonHTML();
-        } else if($this->logIn()){
-            //FIXA PÅ ANNAT SÄTT?
-            if($this->userModel->ifSetMessageLogIn()){
-                $message = $this->userModel->getMessage();
-                $this->loginView->setMessage($message);
-            }      
-            $this->body = $this->loginView->generateLogoutButtonHTML();
-        } else if ($this->userModel->userLoggedIn()){ 
+        if($this->logInCookie()) {
+            $this->showViewLogInCookie();
+        } else if($this->stayLoggedInCookie()) {
+            $this->showViewStayLoggedIn();
+        } else if($this->logIn()) {
+            $this->showViewLogIn();
+        } else if ($this->userModel->userLoggedIn()) { 
             $this->body = $this->loginView->generateLogoutButtonHTML();
         } else if($this->logIn() == false) {
-            $message = $this->userModel->getMessage();
-            $this->loginView->setMessage($message);
-            $this->link = $this->loginView->showLinkRegister(); 
-            $this->body = $this->loginView->generateLoginFormHTML();
-        } 
-        if($this->logOut()){
-            //FIXA PÅ ANNAT SÄTT?
-            if($this->userModel->ifSetMessageLogOut()){
-                
-                $message = $this->userModel->getMessage();
-                $this->loginView->setMessage($message);
-            }
-            $this->loginView->unsetCookie();   
-            $this->link = $this->loginView->showLinkRegister(); 
-
-            $this->body = $this->loginView->generateLoginFormHTML();
+            $this->showViewNotLoggedIn();
         }
-        if($this->loginView->clickRegisterLink()){
-            if($this->register() == false){
-                $message = $this->userModel->getMessage();
-                $this->registerView->setMessageRegister($message);
-            }
-            $this->link = $this->registerView->showLinkBack();
-            $this->body = $this->registerView->generateRegisterForm();
+
+        if($this->logOut()) {
+            $this->showViewLoggedOut();
+        }
+        //FIXA else
+        if($this->loginView->clickRegisterLink()) {
+            $this->showViewRegister();
         }  
         return $this->body;
     }
 
-    public function link(){
-        if($this->loginView->showLink() == true){
-
-        }
+    private function showViewLogInCookie(){
+        $this->userModel->setCookieMessage();
+        $message = $this->userModel->getMessage();
+        $this->loginView->setMessage($message);
+        $this->body = $this->loginView->generateLogoutButtonHTML();
     }
 
-    public function setUsernameAndPassword(){
+    private function showViewStayLoggedIn(){
+        $this->userModel->setSession();
+        $message = $this->userModel->getMessage();
+        $this->loginView->setMessage($message);
+        $this->body = $this->loginView->generateLogoutButtonHTML();
+    }
+
+    private function showViewLogIn(){
+        //FIXA PÅ ANNAT SÄTT?
+        if($this->userModel->ifSetMessageLogIn()){
+            $message = $this->userModel->getMessage();
+            $this->loginView->setMessage($message);
+        }      
+        $this->body = $this->loginView->generateLogoutButtonHTML();
+    }
+
+    private function showViewNotLoggedIn(){
+        $message = $this->userModel->getMessage();
+        $this->loginView->setMessage($message);
+        $this->link = $this->loginView->showLinkRegister(); 
+        $this->body = $this->loginView->generateLoginFormHTML();
+    }
+
+    private function showViewLoggedOut(){
+        //FIXA PÅ ANNAT SÄTT?
+        if($this->userModel->ifSetMessageLogOut()) { 
+            $message = $this->userModel->getMessage();
+            $this->loginView->setMessage($message);
+        }
+        $this->loginView->unsetCookie();   
+        $this->link = $this->loginView->showLinkRegister(); 
+        $this->body = $this->loginView->generateLoginFormHTML();
+    }
+
+    private function showViewRegister(){
+        if($this->register() == false) {
+            $message = $this->userModel->getMessage();
+            $this->registerView->setMessageRegister($message);
+        }
+        $this->link = $this->registerView->showLinkBack();
+        $this->body = $this->registerView->generateRegisterForm();
+    }
+
+    private function getUsernameAndPassword() {
         $username = $this->loginView->getUsername();
         $password = $this->loginView->getPassword();   
         $this->userModel->setUsername($username); 
         $this->userModel->setPassword($password);
     }
 
-    public function logIn(){
-        if($this->loginView->submitForm()){
-            $this->setUsernameAndPassword();
-            if($this->userModel->correctUsernameAndPassword()){     
+    private function logIn() {
+        if($this->loginView->submitForm()) {
+            $this->getUsernameAndPassword();
+            if($this->userModel->correctUsernameAndPassword()) {     
                 return true;  
-            } else if($this->notCorrectLogIn()){
+            } else if($this->notCorrectLogIn()) {
                 return false;
-            }   
-               
+            }           
         } 
     }
 
-    public function logInCookie(){
-        if($this->loginView->submitForm() && $this->loginView->keepMeLoggedIn()){
-            $this->setUsernameAndPassword();
-            if($this->userModel->correctUsernameAndPassword()){
+    private function logInCookie() {
+        if($this->loginView->submitForm() && $this->loginView->keepMeLoggedIn()) {
+            $this->getUsernameAndPassword();
+            if($this->userModel->correctUsernameAndPassword()) {
                 $this->loginView->setCookie();
                 return true;
             } else {
@@ -137,26 +140,24 @@ class Controller{
         }
     }
 
-        public function stayLoggedInCookie(){
-            if($this->loginView->checkCookie() && $this->userModel->checkSession()){
-                $this->userModel->setSession();
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-     
-
-    public function notCorrectLogIn(){
-        if($this->userModel->emtyFields() || $this->userModel->emptyPasswordField() || $this->userModel->emptyUsername()||$this->userModel->wrongNameOrPassword()){
+    private function stayLoggedInCookie() {
+        if($this->loginView->checkCookie() && $this->userModel->checkSession()) {
+            $this->userModel->setSession();
             return true;
         } else {
             return false;
         }
     }
 
-    public function logOut(){
+    private function notCorrectLogIn() {
+        if($this->userModel->emtyFields() || $this->userModel->emptyPasswordField() || $this->userModel->emptyUsernameField()||$this->userModel->wrongNameOrPassword()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function logOut(){
         if($this->loginView->clickLogOut()){
             $this->userModel->loggOutUser();
             return true;
@@ -165,44 +166,30 @@ class Controller{
         }
     }
 
-    public function register(){
-        if($this->registerView->clickRegister()){
-            $usernameRegister = $this->registerView->getUsernameRegister();
-            $passwordRegister = $this->registerView->getPasswordRegister();
-            $passwordRepeat = $this->registerView->getPasswordRepeat();
-            $this->userModel->setRegisterUsername($usernameRegister);
-            $this->userModel->setRegisterPassword($passwordRegister);
-            $this->userModel->setPasswordRepeat($passwordRepeat);
+    private function getUsernameAndPasswordRegister(){
+        $usernameRegister = $this->registerView->getUsernameRegister();
+        $passwordRegister = $this->registerView->getPasswordRegister();
+        $passwordRepeat = $this->registerView->getPasswordRepeat();
+        $this->userModel->setRegisterUsername($usernameRegister);
+        $this->userModel->setRegisterPassword($passwordRegister);
+        $this->userModel->setPasswordRepeat($passwordRepeat);
+    }
 
-            if($this->registerNotOk()){
+    private function register() {
+        if($this->registerView->clickRegister()) {
+            $this->getUsernameAndPasswordRegister();
+            if($this->registerNotOk()) {
                 return false;
             }
         }
     }
 
-    public function registerNotOk(){
+    private function registerNotOk() {
         if($this->userModel->emtypFieldsRegister() || $this->userModel->emptyPasswordRegister() || $this->userModel->shortUsername() || $this->userModel->shortPassword() ||
-        $this->userModel->notOkPasswordRepeat() || $this->userModel->userExist() || $this->userModel->checkForTags()){
+        $this->userModel->notOkPasswordRepeat() || $this->userModel->userExist() || $this->userModel->checkForTags()) {
             return true;
         } else {
             return false;
         }
     }
-
-    
-
-   
-
-
-   
-
-    
-
-
-
-   
-
-    
-
-
 }

@@ -1,12 +1,5 @@
 <?php
 
-//alla post & get
-//kapsla in allt i get och set metoder
-//returnera det
-require_once('model/UserModel.php');
-
-
-
 class LoginView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -19,49 +12,38 @@ class LoginView {
 	private $message;
 	public static $linkName = 'Register a new user';
 
-
-	public function __construct(){
+	public function __construct() {
 	
 	}
 
-	public function setMessage($message){
+	public function setMessage($message) {
 		$this->message = $message;
 	}
 
-
-	public function submitForm(){
-		if(isset($_POST['LoginView::Login'])){
+	public function submitForm() {
+		if(isset($_POST[self::$login])){
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public function setValue(){
-        if(isset($_POST['LoginView::UserName'])){
-            $value = $_POST['LoginView::UserName'];
-            return $value;
-        } else {
-            return "";
-        }   
-    }
-
-	public function showLinkRegister(){
+	public function showLinkRegister() {
 		return '
 		<a href="?register">' . self::$linkName . '</a>
 		';
 	}
 
-	public function clickRegisterLink(){
-		if(isset($_GET["register"])){
+	public function clickRegisterLink() {
+		if(isset($_GET["register"])) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public function clickLogOut(){
-		if(isset($_POST['LoginView::Logout'])){
+	public function clickLogOut() {
+		if(isset($_POST[self::$logout])) {
 			return true;
 		} else {
 			return false;
@@ -77,10 +59,8 @@ class LoginView {
 		';
 	}
 	
-	
 	public function generateLoginFormHTML() {
-		return '
-		
+		return '	
 			<form method="post" > 
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
@@ -101,53 +81,56 @@ class LoginView {
 		';
 	}
 
-	public function getUsername(){
-		$username = (isset($_POST['LoginView::UserName']) ? $_POST['LoginView::UserName'] : null);
+	public function getUsername() {
+		$username = (isset($_POST[self::$name]) ? $_POST[self::$name] : null);
 		return $username;
 	}
 
-	public function getPassword(){
-		$password = (isset($_POST['LoginView::Password']) ? $_POST['LoginView::Password'] : null);
+	public function getPassword() {
+		$password = (isset($_POST[self::$password]) ? $_POST[self::$password] : null);
 		return $password;
 	}
 
-	public function keepMeLoggedIn(){
-		if(isset($_POST['LoginView::KeepMeLoggedIn'])){
+	public function keepMeLoggedIn() {
+		if(isset($_POST[self::$keep])) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public function setCookie(){
-		if(!isset($_COOKIE["LoginView::CookieName"]) && !isset($_COOKIE["LoginView::CookiePassword"])){
-			$cookie_name = "LoginView::CookieName";
+	public function setCookie() {
+		if(!isset($_COOKIE[self::$cookieName]) && !isset($_COOKIE[self::$cookiePassword])) {
+			$cookie_name = self::$cookieName;
 			$cookie_value = "Admin";
-			$name = "LoginView::CookiePassword";
+			$name = self::$cookiePassword;
 			$value = hash('ripemd160', 'Password');
 			setcookie($name, $value, time() + 12360, "/");
 			setcookie($cookie_name, $cookie_value, time() + 12360, "/");
 		}
 	}
 
-	public function checkCookie(){
-		if (isset($_COOKIE["LoginView::CookieName"]) && isset($_COOKIE["LoginView::CookiePassword"])){
+	public function checkCookie() {
+		if (isset($_COOKIE[self::$cookieName]) && isset($_COOKIE[self::$cookiePassword])) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public function unsetCookie(){
-		if(isset($_COOKIE["LoginView::CookieName"]) && isset($_COOKIE["LoginView::CookiePassword"])){
-			setcookie("LoginView::CookiePassword", hash('ripemd160', 'Password'), time() - 12360, "/");
-			setcookie("LoginView::CookieName", "Admin", time() - 12360, "/");
+	public function unsetCookie() { 
+		if(isset($_COOKIE[self::$cookieName]) && isset($_COOKIE[self::$cookiePassword])) {
+			setcookie(self::$cookiePassword, hash('ripemd160', 'Password'), time() - 12360, "/");
+			setcookie(self::$cookieName, "Admin", time() - 12360, "/");
 		}
 	}
-
-
-
 	
-	
-	
+	private function setValue() {
+        if(isset($_POST[self::$name])) {
+            $value = $_POST[self::$name];
+            return $value;
+        } else {
+            return "";
+        }   
+    }
 }

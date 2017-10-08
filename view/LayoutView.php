@@ -1,10 +1,8 @@
 <?php
 
-
 class LayoutView {
 
   private $loggedIn;
-  
   
   public function render($isLoggedIn, LoginView $loginView, $body, $link, DateTimeView $dateTimeView) {
     echo '<!DOCTYPE html>
@@ -16,10 +14,9 @@ class LayoutView {
         <body>
           <h1>Assignment 3</h1>
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
-          '. $link .'
+          ' . $link . '
           <div class="container">
-     
-              '. $body .'    
+              ' . $body . '    
               ' . $dateTimeView->show() . '
           </div>
          </body>
@@ -35,6 +32,4 @@ class LayoutView {
       return '<h2>Not logged in</h2>';
     }
   }
-
-
 }
