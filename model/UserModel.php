@@ -65,7 +65,11 @@ class UserModel{
 
     public function correctUsernameAndPassword() {
         if($this->username == "Admin" && $this->password == "Password") {
-            $this->message = "Welcome";
+            if ($this->userLoggedIn() == false) {
+                $this->message = "Welcome";
+            } else {
+                $this->message = "";
+            }
             $_SESSION['username'] = $this->username;
             $_SESSION['password'] = $this->password;
             return true;
@@ -76,28 +80,19 @@ class UserModel{
 
     public function userLoggedIn() {
         if(isset($_SESSION['username']) && isset($_SESSION['password'])) {
-            session_unset("loggedIn");
+            //session_unset("loggedIn");
             return true;
         } else {
             return false;
         }
     }
 
-
-    public function ifSetMessageLogIn() {
-        if(!isset($_SESSION["loggedIn"])) {
-            return $_SESSION["loggedIn"] = "logged in";     
-        }
-    }
-
-    public function ifSetMessageLogOut() {
-        if(!isset($_SESSION["loggedOut"])) {
-            return $_SESSION["loggedOut"] = "logged out";
-        }
-    }
-
     public function loggOutUser() {
-        $this->message = "Bye bye!";
+        if ($this->userLoggedIn()) {
+            $this->message = "Bye bye!";
+        } else {
+            $this->message = "";
+        }
         session_unset("username");
         session_unset("password");
         session_unset("loggedIn");
@@ -217,8 +212,8 @@ class UserModel{
 
     public function checktext() {
         if($this->getTextLength() > 0 && $this->getTextLength() <= 10) {
-            echo "a";
             return true;
+            //FIXA
         } else {
             return false;
         }

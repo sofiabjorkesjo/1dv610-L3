@@ -34,7 +34,6 @@ class Controller{
         $this->body = $this->setBody();
         $this->getTextToGuessedBook();
         if($this->body == $this->guestBookView->generateGuestBookView() . $this->loginView->generateLogoutButtonHTML() || $this->body == $this->guestBookView->showGuestBookText() . $this->loginView->generateLogoutButtonHTML()) {
-            $this->getTextToGuessedBook();
             $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->guestBook, $this->guestBookText, $this->dateTimeView);
         } else {
             $this->guestBook = "";
@@ -55,7 +54,8 @@ class Controller{
             $this->showViewLogIn();
         } else if ($this->userModel->userLoggedIn()) { 
             $this->link = $this->loginView->showLinkGuestbook(); 
-            $this->body = $this->loginView->generateLogoutButtonHTML();
+            $this->body = $this->guestBookView->generateGuestBookView();
+            $this->body .= $this->loginView->generateLogoutButtonHTML();
         } else if($this->logIn() == false) {
             $this->showViewNotLoggedIn();
         }
@@ -68,9 +68,7 @@ class Controller{
 
         //varför funkar de ej?? back to logged in
         if($this->userModel->userLoggedIn()) {
-            echo "najs";
             if($this->guestBookView->getBack()) {
-                echo "mer najs";
                 $this->body = $this->loginView->generateLogoutButtonHTML();
             }
         }
@@ -86,25 +84,20 @@ class Controller{
     }
 
     public function getTextToGuessedBook() {
-        if($this->guestBookView->sendText()){
-            $textToFile = $this->guestBookView->getText();
-            $this->userModel->setText($textToFile);
-            if($this->userModel->checkText()){
-                echo "text är mellan 0-10 tecken";
-                //skriva till fil
-                $this->userModel->writeToFile();
-                $this->link = $this->loginView->showLinkGuestbook();
-                $this->body = $this->guestBookView->generateGuestBookView();       
-                $this->body .= $this->loginView->generateLogoutButtonHTML();
-                //skriva ut filen i vyn 
-                //klicka på länk för att se guestbook o då visa den
-               
-            } else {
-                echo "fel";
-                //katsa exception eller nått kanske
+            if($this->guestBookView->sendText()) {
+                $textToFile = $this->guestBookView->getText();
+                $this->userModel->setText($textToFile);
+                if($this->userModel->checkText()){
+                    //skriva till fil
+                    $this->userModel->writeToFile();
+                    $this->link = $this->loginView->showLinkGuestbook();
+                    $this->body = $this->guestBookView->generateGuestBookView();       
+                    $this->body .= $this->loginView->generateLogoutButtonHTML();
+                } else {
+        
+                    //katsa exception eller nått kanske
+                }
             }
-   
-        }
     }
 
     private function showViewLogInCookie(){
@@ -123,14 +116,12 @@ class Controller{
     }
 
     private function showViewLogIn(){
-        //FIXA PÅ ANNAT SÄTT?
-        if($this->userModel->ifSetMessageLogIn()){
-            $message = $this->userModel->getMessage();
-            $this->loginView->setMessage($message);
-        }
+        $message = $this->userModel->getMessage();
+        $this->loginView->setMessage($message);
         $this->link = $this->loginView->showLinkGuestbook();
         $this->body = $this->guestBookView->generateGuestBookView();       
         $this->body .= $this->loginView->generateLogoutButtonHTML();
+        //$this->getTextToGuessedBook();
     }
 
     private function showViewNotLoggedIn(){
@@ -142,10 +133,9 @@ class Controller{
 
     private function showViewLoggedOut(){
         //FIXA PÅ ANNAT SÄTT?
-        if($this->userModel->ifSetMessageLogOut()) { 
-            $message = $this->userModel->getMessage();
-            $this->loginView->setMessage($message);
-        }
+        $message = $this->userModel->getMessage();
+        $this->loginView->setMessage($message);
+    
         $this->loginView->unsetCookie();   
         $this->link = $this->loginView->showLinkRegister(); 
         $this->body = $this->loginView->generateLoginFormHTML();
@@ -170,7 +160,7 @@ class Controller{
     private function logIn() {
         if($this->loginView->submitForm()) {
             $this->getUsernameAndPassword();
-            if($this->userModel->correctUsernameAndPassword()) {     
+            if($this->userModel->correctUsernameAndPassword()) {  
                 return true;  
             } else if($this->notCorrectLogIn()) {
                 return false;
@@ -237,7 +227,6 @@ class Controller{
 
     private function goToGuestbook() {
         if($this->loginView->clickGuestbookLink()) {
-            echo "mmmm";
             return true;
         } else {
             return false;
@@ -246,7 +235,6 @@ class Controller{
 
     private function back(){
         if($this->guestBookView->getBack()) {
-            echo "fjjffj";
             return true;
         } else {
             return false;

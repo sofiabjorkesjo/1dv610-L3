@@ -28,7 +28,6 @@ class GuestBookView {
     
     public function getText() {
         $text =  (isset($_POST[self::$text]) ? $_POST[self::$text] : null);
-        echo $text;
         return $text;
     }
 
@@ -47,7 +46,6 @@ class GuestBookView {
     }
 
     public function showGuestBookText(){
-        echo "jdjd";
         return '
             <h2>Guestbook</h2>
             <div>
@@ -64,10 +62,8 @@ class GuestBookView {
 
     public function getBack(){
         if(isset($_GET["?"])) {
-            echo "true back";
             return true;
         } else {
-            echo "bl'";
             return false;
         }
     }

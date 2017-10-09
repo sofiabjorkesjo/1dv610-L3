@@ -51,7 +51,6 @@ class LoginView {
 
 	public function clickGuestbookLink() {
 		if(isset($_GET["guestbook"])) {
-			echo "ooo";
 			return true;
 		} else {
 			return false;
