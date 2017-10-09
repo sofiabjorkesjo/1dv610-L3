@@ -4,6 +4,8 @@ class GuestBookView {
     
     private static $text = "GuestBookViewView::Text";
     private static $send = "GuestBookViewView::Send";
+    private static $guestBook = "GuestBookViewView::GuestBook";
+    private $textSave;
 
     public function __construct() {
         
@@ -35,5 +37,20 @@ class GuestBookView {
         } else {
             return false;
         }
+    }
+
+    public function writeFileToView() {
+        $file = file_get_contents("guestBook.txt");
+        echo $file;
+        return $file;
+
+    }
+
+    public function showGuestBookView(){
+        return '
+            <div>
+              "'. $this->writeFileToView() .'"
+            </div>
+        ';
     }
 }

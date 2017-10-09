@@ -21,7 +21,7 @@ class LoginView {
 	}
 
 	public function submitForm() {
-		if(isset($_POST[self::$login])){
+		if(isset($_POST[self::$login])) {
 			return true;
 		} else {
 			return false;

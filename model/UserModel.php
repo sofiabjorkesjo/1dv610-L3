@@ -224,12 +224,10 @@ class UserModel{
         }
     }
 
-    //lägg i vyn kanske
     public function writeToFile(){
         $file = "guestBook.txt";
         $guestBook = file_get_contents($file);
-        $guestBook .= "<p>" . $this->text . "</p>";
+        $guestBook .= $this->text;
         file_put_contents($file, $guestBook);
-        echo "jaa";
     }
 }

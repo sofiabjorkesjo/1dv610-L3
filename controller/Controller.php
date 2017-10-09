@@ -17,6 +17,7 @@ class Controller{
     private $body;
     private $link;
     private $guestBook;
+    private $test;
 
     public function __construct() {
         $this->layoutView = new LayoutView();
@@ -32,12 +33,14 @@ class Controller{
         
         if($this->body == $this->loginView->generateLogoutButtonHTML()) {
             $this->guestBook = $this->guestBookView->generateGuestBookView();
+            $this->test =  $this->guestBookView->showGuestBookView();
             $this->link = "";
             $this->getTextToGuessedBook();
-            $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->guestBook, $this->dateTimeView);
+            $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->guestBook, $this->test, $this->dateTimeView);
         } else {
             $this->guestBook = "";
-            $this->layoutView->render(false, $this->loginView, $this->body, $this->link, $this->guestBook, $this->dateTimeView);
+            $this->test = "";
+            $this->layoutView->render(false, $this->loginView, $this->body, $this->link, $this->guestBook, $this->test, $this->dateTimeView);
         }
     }
 
@@ -69,18 +72,20 @@ class Controller{
 
     public function getTextToGuessedBook() {
         if($this->guestBookView->sendText()){
-            $text = $this->guestBookView->getText();
-            $this->userModel->setText($text);
+            $textToFile = $this->guestBookView->getText();
+            $this->userModel->setText($textToFile);
             if($this->userModel->checkText()){
                 echo "text är mellan 0-10 tecken";
                 //skriva till fil
                 $this->userModel->writeToFile();
+                //skriva ut filen i vyn 
+                //klicka på länk för att se guestbook o då visa den
+               
             } else {
                 echo "fel";
+                //katsa exception eller nått kanske
             }
-            
-            //kolla texten där, om de är bra, 
-            //skriv till fil i vyn?? annars fel
+   
         }
     }
 
