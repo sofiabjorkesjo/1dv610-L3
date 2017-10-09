@@ -8,6 +8,8 @@ class UserModel{
     private $usernameRegister;
     private $passwordRegister;
     private $passwordRepeat;
+    private $text;
+    //private $guestBook;
     
     public function __construct(){
        
@@ -203,5 +205,31 @@ class UserModel{
             $_SESSION["password"] = "Password";
             $this->message = "Welcome back with cookie";
         }
+    }
+
+    public function setText($text) {
+        $this->text = $text;
+    }
+
+    private function getTextLength(){
+        return strlen($this->text);
+    }
+
+    public function checktext() {
+        if($this->getTextLength() > 0 && $this->getTextLength() <= 10) {
+            echo "a";
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //lägg i vyn kanske
+    public function writeToFile(){
+        $file = "guestBook.txt";
+        $guestBook = file_get_contents($file);
+        $guestBook .= "<p>" . $this->text . "</p>";
+        file_put_contents($file, $guestBook);
+        echo "jaa";
     }
 }

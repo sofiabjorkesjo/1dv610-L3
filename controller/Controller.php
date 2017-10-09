@@ -32,6 +32,8 @@ class Controller{
         
         if($this->body == $this->loginView->generateLogoutButtonHTML()) {
             $this->guestBook = $this->guestBookView->generateGuestBookView();
+            $this->link = "";
+            $this->getTextToGuessedBook();
             $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->guestBook, $this->dateTimeView);
         } else {
             $this->guestBook = "";
@@ -63,6 +65,23 @@ class Controller{
             $this->showViewRegister();
         }  
         return $this->body;
+    }
+
+    public function getTextToGuessedBook() {
+        if($this->guestBookView->sendText()){
+            $text = $this->guestBookView->getText();
+            $this->userModel->setText($text);
+            if($this->userModel->checkText()){
+                echo "text är mellan 0-10 tecken";
+                //skriva till fil
+                $this->userModel->writeToFile();
+            } else {
+                echo "fel";
+            }
+            
+            //kolla texten där, om de är bra, 
+            //skriv till fil i vyn?? annars fel
+        }
     }
 
     private function showViewLogInCookie(){

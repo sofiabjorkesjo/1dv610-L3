@@ -21,5 +21,19 @@ class GuestBookView {
 				</fieldset>
 			</form>
 		';
-	}
+    }
+    
+    public function getText() {
+        $text =  (isset($_POST[self::$text]) ? $_POST[self::$text] : null);
+        echo $text;
+        return $text;
+    }
+
+    public function sendText() {
+        if(isset($_POST[self::$send])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
