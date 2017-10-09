@@ -18,6 +18,8 @@ class Controller{
     private $link;
     private $guestBook;
     private $test;
+    private $linkGuestBook;
+    private $guestBookText;
 
     public function __construct() {
         $this->layoutView = new LayoutView();
@@ -30,22 +32,19 @@ class Controller{
 
     public function showView() {
         $this->body = $this->setBody();
-        
-        if($this->body == $this->loginView->generateLogoutButtonHTML()) {
-            $this->guestBook = $this->guestBookView->generateGuestBookView();
-            $this->test =  $this->guestBookView->showGuestBookView();
-            $this->link = "";
+        $this->getTextToGuessedBook();
+        if($this->body == $this->guestBookView->generateGuestBookView() . $this->loginView->generateLogoutButtonHTML() || $this->body == $this->guestBookView->showGuestBookText() . $this->loginView->generateLogoutButtonHTML()) {
             $this->getTextToGuessedBook();
-            $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->guestBook, $this->test, $this->dateTimeView);
+            $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->guestBook, $this->guestBookText, $this->dateTimeView);
         } else {
             $this->guestBook = "";
-            $this->test = "";
-            $this->layoutView->render(false, $this->loginView, $this->body, $this->link, $this->guestBook, $this->test, $this->dateTimeView);
+            $this->guestBookText = "";
+            $this->layoutView->render(false, $this->loginView, $this->body, $this->link, $this->guestBook, $this->guestBookText, $this->dateTimeView);
         }
     }
 
     private function setBody() {  
-        $this->link = $this->loginView->showLinkRegister();   
+        $this->link = $this->loginView->showLinkRegister();
         $this->body = $this->loginView->generateLoginFormHTML();
   
         if($this->logInCookie()) {
@@ -55,11 +54,27 @@ class Controller{
         } else if($this->logIn()) {
             $this->showViewLogIn();
         } else if ($this->userModel->userLoggedIn()) { 
+            $this->link = $this->loginView->showLinkGuestbook(); 
             $this->body = $this->loginView->generateLogoutButtonHTML();
         } else if($this->logIn() == false) {
             $this->showViewNotLoggedIn();
         }
 
+        if($this->goToGuestbook()) {
+            $this->link = $this->guestBookView->linkBackToLoggedIn();
+            $this->body = $this->guestBookView->showGuestBookText();
+            $this->body .= $this->loginView->generateLogoutButtonHTML();
+        }
+
+        //varför funkar de ej?? back to logged in
+        if($this->userModel->userLoggedIn()) {
+            echo "najs";
+            if($this->guestBookView->getBack()) {
+                echo "mer najs";
+                $this->body = $this->loginView->generateLogoutButtonHTML();
+            }
+        }
+        
         if($this->logOut()) {
             $this->showViewLoggedOut();
         }
@@ -78,6 +93,9 @@ class Controller{
                 echo "text är mellan 0-10 tecken";
                 //skriva till fil
                 $this->userModel->writeToFile();
+                $this->link = $this->loginView->showLinkGuestbook();
+                $this->body = $this->guestBookView->generateGuestBookView();       
+                $this->body .= $this->loginView->generateLogoutButtonHTML();
                 //skriva ut filen i vyn 
                 //klicka på länk för att se guestbook o då visa den
                
@@ -93,6 +111,7 @@ class Controller{
         $this->userModel->setCookieMessage();
         $message = $this->userModel->getMessage();
         $this->loginView->setMessage($message);
+        
         $this->body = $this->loginView->generateLogoutButtonHTML();
     }
 
@@ -108,8 +127,10 @@ class Controller{
         if($this->userModel->ifSetMessageLogIn()){
             $message = $this->userModel->getMessage();
             $this->loginView->setMessage($message);
-        }      
-        $this->body = $this->loginView->generateLogoutButtonHTML();
+        }
+        $this->link = $this->loginView->showLinkGuestbook();
+        $this->body = $this->guestBookView->generateGuestBookView();       
+        $this->body .= $this->loginView->generateLogoutButtonHTML();
     }
 
     private function showViewNotLoggedIn(){
@@ -211,6 +232,24 @@ class Controller{
             if($this->registerNotOk()) {
                 return false;
             }
+        }
+    }
+
+    private function goToGuestbook() {
+        if($this->loginView->clickGuestbookLink()) {
+            echo "mmmm";
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function back(){
+        if($this->guestBookView->getBack()) {
+            echo "fjjffj";
+            return true;
+        } else {
+            return false;
         }
     }
 

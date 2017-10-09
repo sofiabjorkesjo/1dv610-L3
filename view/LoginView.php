@@ -11,6 +11,7 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 	private $message;
 	public static $linkName = 'Register a new user';
+	public static $linkNameGuestBook = "Guestbook";
 
 	public function __construct() {
 	
@@ -41,6 +42,23 @@ class LoginView {
 			return false;
 		}
 	}
+
+	public function showLinkGuestbook() {
+		return '
+		<a href="?guestbook">' . self::$linkNameGuestBook . '</a>
+		';
+	}
+
+	public function clickGuestbookLink() {
+		if(isset($_GET["guestbook"])) {
+			echo "ooo";
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
 
 	public function clickLogOut() {
 		if(isset($_POST[self::$logout])) {

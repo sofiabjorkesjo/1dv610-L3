@@ -4,7 +4,7 @@ class LayoutView {
 
   private $loggedIn;
   
-  public function render($isLoggedIn, LoginView $loginView, $body, $link, $guestBook, $test,  DateTimeView $dateTimeView) {
+  public function render($isLoggedIn, LoginView $loginView, $body, $link, $guestBook, $linkGuestBook,  DateTimeView $dateTimeView) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -17,7 +17,7 @@ class LayoutView {
           ' . $link . '
           <div class="container">
               ' . $guestBook . '
-              ' . $test . '
+              ' . $linkGuestBook . '
               ' . $body . '    
               ' . $dateTimeView->show() . '
           </div>
