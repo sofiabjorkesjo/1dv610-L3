@@ -4,7 +4,7 @@ class LayoutView {
 
   private $loggedIn;
   
-  public function render($isLoggedIn, LoginView $loginView, $body, $link, DateTimeView $dateTimeView) {
+  public function render($isLoggedIn, LoginView $loginView, $body, $link, $guestBook, DateTimeView $dateTimeView) {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -16,6 +16,7 @@ class LayoutView {
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
           ' . $link . '
           <div class="container">
+              ' . $guestBook . '
               ' . $body . '    
               ' . $dateTimeView->show() . '
           </div>

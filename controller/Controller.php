@@ -4,6 +4,7 @@ require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
 require_once('view/RegisterView.php');
+require_once('view/GuestBookView.php');
 require_once('model/UserModel.php');
 
 class Controller{
@@ -15,22 +16,27 @@ class Controller{
     private $userModel;
     private $body;
     private $link;
+    private $guestBook;
 
     public function __construct() {
         $this->layoutView = new LayoutView();
         $this->dateTimeView = new DateTimeView(); 
         $this->loginView = new LoginView();
         $this->userModel = new UserModel();
-        $this->registerView = new RegisterView();    
+        $this->registerView = new RegisterView();  
+        $this->guestBookView = new GuestBookView();
     }
 
     public function showView() {
-       $this->body = $this->setBody();
-       if($this->body == $this->loginView->generateLogoutButtonHTML()) {
-            $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->dateTimeView);
-       } else {
-            $this->layoutView->render(false, $this->loginView, $this->body, $this->link,  $this->dateTimeView);
-       }
+        $this->body = $this->setBody();
+        
+        if($this->body == $this->loginView->generateLogoutButtonHTML()) {
+            $this->guestBook = $this->guestBookView->generateGuestBookView();
+            $this->layoutView->render(true, $this->loginView, $this->body, $this->link, $this->guestBook, $this->dateTimeView);
+        } else {
+            $this->guestBook = "";
+            $this->layoutView->render(false, $this->loginView, $this->body, $this->link, $this->guestBook, $this->dateTimeView);
+        }
     }
 
     private function setBody() {  

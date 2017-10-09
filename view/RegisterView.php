@@ -60,23 +60,23 @@ class RegisterView {
     }
 
     public function getUsernameRegister() {
-        $username =  (isset($_POST["RegisterView::UserName"]) ? $_POST["RegisterView::UserName"] : null);
+        $username =  (isset($_POST[self::$username]) ? $_POST[self::$username] : null);
         return $username;	
     }
 
     public function getPasswordRegister() {
-        $password =  (isset($_POST["RegisterView::Password"]) ? $_POST["RegisterView::Password"] : null);
+        $password =  (isset($_POST[self::$password]) ? $_POST[self::$password] : null);
         return $password;
     }
 
     public function getPasswordRepeat() {
-        $passwordRepeat = (isset($_POST["RegisterView::PasswordRepeat"]) ? $_POST["RegisterView::PasswordRepeat"] : null);
+        $passwordRepeat = (isset($_POST[self::$repeatPassword]) ? $_POST[self::$repeatPassword] : null);
         return $passwordRepeat;
     }
 
     private function setValue() {
-        if(isset($_POST['RegisterView::UserName'])) {
-            $value = $_POST['RegisterView::UserName'];
+        if(isset($_POST[self::$username])) {
+            $value = $_POST[self::$username];
             return strip_tags($value);
         } else {
             return "";
