@@ -49,6 +49,7 @@ class Controller{
             $this->showViewRegister(); 
         } else if($this->logInCookie()) {
             $this->showViewLogInCookie();
+           //$this->showViewLogIn();
         } else if($this->stayLoggedInCookie()) {
             $this->showViewStayLoggedIn();
         } else if($this->logIn() || $this->userModel->userLoggedIn()) {
@@ -73,45 +74,49 @@ class Controller{
             if($this->guestBookView->sendText()) {
                 $textToFile = $this->guestBookView->getText();
                 $this->userModel->setText($textToFile);
-                if($this->userModel->checkText()){
-                    $this->userModel->writeToFile();
+                if($this->userModel->checkText() == true){
+                    $message = $this->userModel->getMessage();
+                    $this->loginView->setMessage($message);
+                    $text = $this->userModel->sendToController();
+                    $this->guestBookView->setTextToView($text);
+                    $textToFile = $this->guestBookView->textInTag();
+                    $this->userModel->writeToFile($textToFile);
                     $this->link = $this->loginView->showLinkGuestbook();
                     $this->body = $this->guestBookView->generateGuestBookView();       
                     $this->body .= $this->loginView->generateLogoutButtonHTML();
-                } else {
+                } else if($this->userModel->checkText() == false){
                     //katsa exception eller nått kanske
+                    $message = $this->userModel->getMessage();
+                    $this->loginView->setMessage($message);
+                    $this->link = $this->loginView->showLinkGuestbook();
+                    $this->body = $this->guestBookView->generateGuestBookView();       
+                    $this->body .= $this->loginView->generateLogoutButtonHTML();
                 }
             }
     }
 
-    private function notLoggedIn() {
-        if ($this->logOut() || $this->logIn() == false) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    //FIXA
     private function showViewLogInCookie(){
         $this->userModel->setCookieMessage();
         $message = $this->userModel->getMessage();
         $this->loginView->setMessage($message);
-        
-        $this->body = $this->loginView->generateLogoutButtonHTML();
+        $this->link = $this->loginView->showLinkGuestbook();
+        $this->body = $this->guestBookView->generateGuestBookView();       
+        $this->body .= $this->loginView->generateLogoutButtonHTML();
     }
 
+    //FIXA
     private function showViewStayLoggedIn(){
         $this->userModel->setSession();
         $message = $this->userModel->getMessage();
         $this->loginView->setMessage($message);
-        $this->body = $this->loginView->generateLogoutButtonHTML();
+        $this->link = $this->loginView->showLinkGuestbook();
+        $this->body = $this->guestBookView->generateGuestBookView();       
+        $this->body .= $this->loginView->generateLogoutButtonHTML();
     }
 
     private function showViewLogIn(){
-        echo "mm";
-        
         $message = $this->userModel->getMessage();
-        echo $message;
         $this->loginView->setMessage($message);
         $this->link = $this->loginView->showLinkGuestbook();
         $this->body = $this->guestBookView->generateGuestBookView();       

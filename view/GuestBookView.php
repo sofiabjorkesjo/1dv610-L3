@@ -8,6 +8,7 @@ class GuestBookView {
     private static $linkName = "Show guestbook";
     private $textSave;
     public static $linkNameBack = "Back";
+    private $sendText;
 
     public function __construct() {
         
@@ -29,6 +30,14 @@ class GuestBookView {
     public function getText() {
         $text =  (isset($_POST[self::$text]) ? $_POST[self::$text] : null);
         return $text;
+    }
+
+    public function setTextToView($text) {
+        $this->sendText = $text;
+    }
+
+    public function textInTag(){
+        return "<p>" . $this->sendText . "</p>";
     }
 
     public function sendText() {
@@ -58,13 +67,5 @@ class GuestBookView {
         return '
 		<a href="?">' . self::$linkNameBack . '</a>
 		';
-    }
-
-    public function getBack(){
-        if(isset($_GET["?"])) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

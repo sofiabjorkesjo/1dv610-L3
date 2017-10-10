@@ -64,7 +64,6 @@ class UserModel{
 
     public function correctUsernameAndPassword() {
         if($this->username == "Admin" && $this->password == "Password") {
-            echo "aaa";
             if ($this->userLoggedIn() == false) {
                 $this->message = "Welcome";
             } else {
@@ -205,23 +204,28 @@ class UserModel{
         $this->text = $text;
     }
 
+    public function sendToController(){
+        return $this->text;
+    }
+
     private function getTextLength(){
         return strlen($this->text);
     }
 
     public function checktext() {
-        if($this->getTextLength() > 0 && $this->getTextLength() <= 10) {
+        if($this->getTextLength() >= 1 && $this->getTextLength() <= 20) {
+            $this->message = "The text is saved in the guest book!";
             return true;
-            //FIXA
         } else {
+            $this->message = "Text must be 1-20 characters.";
             return false;
         }
     }
 
-    public function writeToFile(){
+    public function writeToFile($textToFile){
         $file = "guestBook.txt";
         $guestBook = file_get_contents($file);
-        $guestBook .= $this->text;
+        $guestBook .= $textToFile;
         file_put_contents($file, $guestBook);
     }
 }
