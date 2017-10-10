@@ -1,13 +1,17 @@
 <?php
 
+require_once('UserData.php');
+
 class LoginModel{
     
     private $username;
     private $password;
     private $message;
+    private $userData;
+
     
     public function __construct(){
-       
+       $this->userData = new UserData();
     }
 
     public function setUsername($username){
@@ -32,7 +36,7 @@ class LoginModel{
     }
 
     public function emptyPasswordField() {
-        if($this->username == "Admin" && $this->password == "") {
+        if($this->username == $this->userData->rightUsername() && $this->password == "") {
             $this->message = "Password is missing";
             return true;
         } else {
@@ -41,7 +45,7 @@ class LoginModel{
     }
 
     public function emptyUsernameField() {
-        if($this->username == "" && $this->password == "Password") {
+        if($this->username == "" && $this->password == $this->userData->rightPassword()) {
             $this->message = "Username is missing";
             return true;
         } else {
@@ -50,7 +54,7 @@ class LoginModel{
     }
 
     public function wrongNameOrPassword() {
-        if($this->username == "Admin" && $this->password != "Password" || $this->username != "Admin" && $this->password == "Password") {
+        if($this->username == $this->userData->rightUsername() && $this->password != $this->userData->rightPassword() || $this->username != $this->userData->rightUsername() && $this->password == $this->userData->rightPassword()) {
             $this->message = "Wrong name or password";
             return true;
         } else {
@@ -59,7 +63,7 @@ class LoginModel{
     }
 
     public function correctUsernameAndPassword() {
-        if($this->username == "Admin" && $this->password == "Password") {
+        if($this->username == $this->userData->rightUsername() && $this->password == $this->userData->rightPassword()) {
             if ($this->userLoggedIn() == false) {
                 $this->message = "Welcome";
             } else {
@@ -107,8 +111,8 @@ class LoginModel{
 
     public function setSession() {
         if(!isset($_SESSION["username"]) && !isset($_SESSION["password"])) {
-            $_SESSION["username"] = "Admin";
-            $_SESSION["password"] = "Password";
+            $_SESSION["username"] = $this->userData->rightUsername();
+            $_SESSION["password"] = $this->userData->rightPassword();
             $this->message = "Welcome back with cookie";
         }
     }

@@ -117,7 +117,7 @@ class LoginView {
 	public function setCookie() {
 		if(!isset($_COOKIE[self::$cookieName]) && !isset($_COOKIE[self::$cookiePassword])) {
 			$cookie_name = self::$cookieName;
-			$cookie_value = "Admin";
+			$cookie_value = $this->getUsername();
 			$name = self::$cookiePassword;
 			$value = hash('ripemd160', $this->getPassword());
 			setcookie($name, $value, time() + 12360, "/");
@@ -135,8 +135,8 @@ class LoginView {
 
 	public function unsetCookie() { 
 		if(isset($_COOKIE[self::$cookieName]) && isset($_COOKIE[self::$cookiePassword])) {
-			setcookie(self::$cookiePassword, hash('ripemd160', 'Password'), time() - 12360, "/");
-			setcookie(self::$cookieName, "Admin", time() - 12360, "/");
+			setcookie(self::$cookiePassword, hash('ripemd160', $this->getPassword()), time() - 12360, "/");
+			setcookie(self::$cookieName, $this->getUsername(), time() - 12360, "/");
 		}
 	}
 	

@@ -101,7 +101,6 @@ class Controller{
         }
     }
 
-    //FIXA
     private function showViewLogInCookie(){
         $this->loginModel->setCookieMessage();
         $message = $this->loginModel->getMessage();
@@ -110,7 +109,6 @@ class Controller{
         $this->guestbookAndLogOut();
     }
 
-    //FIXA
     private function showViewStayLoggedIn(){
         $this->loginModel->setSession();
         $message = $this->loginModel->getMessage();

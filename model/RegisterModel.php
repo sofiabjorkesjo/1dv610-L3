@@ -1,14 +1,17 @@
 <?php 
 
+require_once('UserData.php');
+
 class RegisterModel{
 
     private $message;
     private $usernameRegister;
     private $passwordRegister;
     private $passwordRepeat;
+    private $userData;
 
     public function __construct() {
-
+        $this->userData = new UserData();
     }
 
     public function getMessage() {
@@ -81,7 +84,7 @@ class RegisterModel{
     }
 
     public function userExist() {
-        if ($this->usernameRegister == "Admin" && $this->getPasswordLength() >= 6 && $this->passwordRegister == $this->passwordRepeat) {
+        if ($this->usernameRegister == $this->userData->rightUsername() && $this->getPasswordLength() >= 6 && $this->passwordRegister == $this->passwordRepeat) {
             $this->message = "User exists, pick another username.";
             return true;
         } else {
