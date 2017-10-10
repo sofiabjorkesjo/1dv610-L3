@@ -57,8 +57,6 @@ class LoginView {
 		}
 	}
 
-
-
 	public function clickLogOut() {
 		if(isset($_POST[self::$logout])) {
 			return true;
@@ -121,7 +119,7 @@ class LoginView {
 			$cookie_name = self::$cookieName;
 			$cookie_value = "Admin";
 			$name = self::$cookiePassword;
-			$value = hash('ripemd160', 'Password');
+			$value = hash('ripemd160', $this->getPassword());
 			setcookie($name, $value, time() + 12360, "/");
 			setcookie($cookie_name, $cookie_value, time() + 12360, "/");
 		}

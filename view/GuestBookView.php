@@ -9,6 +9,7 @@ class GuestBookView {
     private $textSave;
     public static $linkNameBack = "Back";
     private $sendText;
+    private $message;
 
     public function __construct() {
         
@@ -25,6 +26,10 @@ class GuestBookView {
 			</form>
 		';
     }
+
+    public function setMessage($message) {
+		$this->message = $message;
+	}
     
     
     public function getText() {
@@ -56,6 +61,7 @@ class GuestBookView {
 
     public function showGuestBookText(){
         return '
+            <p>' . $this->message .'</p>
             <h2>Guestbook</h2>
             <div>
               "'. $this->writeFileToView() .'"

@@ -44,7 +44,8 @@ class Controller{
 
     private function setBody() {  
         $this->link = $this->loginView->showLinkRegister();
-        $this->body = $this->loginView->generateLoginFormHTML();
+        //$this->body = $this->loginView->showLinkGuestbook();
+        //$this->body .= $this->loginView->generateLoginFormHTML();
         if($this->loginView->clickRegisterLink()) {
             $this->showViewRegister(); 
         } else if($this->logInCookie()) {
@@ -58,10 +59,16 @@ class Controller{
             $this->showViewLoggedOut();
         }
 
-        if($this->goToGuestbook()) {
+        if($this->goToGuestbook() && $this->userModel->userLoggedIn()) {
             $this->link = $this->guestBookView->linkBackToLoggedIn();
             $this->body = $this->guestBookView->showGuestBookText();
             $this->body .= $this->loginView->generateLogoutButtonHTML();
+        } else if($this->goToGuestbook() && $this->userModel->userLoggedIn() == false){
+            $this->userModel->messageNotLoggedIn();
+            $message = $this->userModel->getMessage();
+            $this->guestBookView->setMessage($message);
+            $this->link = $this->guestBookView->linkBackToLoggedIn();
+            $this->body = $this->guestBookView->showGuestBookText();
         }
 
         if($this->logOut()) {
@@ -130,7 +137,8 @@ class Controller{
             $this->loginView->unsetCookie();  
         }  
         $this->link = $this->loginView->showLinkRegister(); 
-        $this->body = $this->loginView->generateLoginFormHTML();
+        $this->body = $this->loginView->showLinkGuestbook();
+        $this->body .= $this->loginView->generateLoginFormHTML();
     }
 
     private function showViewRegister(){

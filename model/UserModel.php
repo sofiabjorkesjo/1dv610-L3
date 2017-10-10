@@ -212,6 +212,10 @@ class UserModel{
         return strlen($this->text);
     }
 
+    public function messageNotLoggedIn(){
+        $this->message = "You need to be logged in to add a text to the guest book!";
+    }
+
     public function checktext() {
         if($this->getTextLength() >= 1 && $this->getTextLength() <= 20) {
             $this->message = "The text is saved in the guest book!";
