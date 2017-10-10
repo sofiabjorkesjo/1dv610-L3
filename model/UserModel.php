@@ -9,7 +9,6 @@ class UserModel{
     private $passwordRegister;
     private $passwordRepeat;
     private $text;
-    //private $guestBook;
     
     public function __construct(){
        
@@ -65,6 +64,7 @@ class UserModel{
 
     public function correctUsernameAndPassword() {
         if($this->username == "Admin" && $this->password == "Password") {
+            echo "aaa";
             if ($this->userLoggedIn() == false) {
                 $this->message = "Welcome";
             } else {
@@ -80,7 +80,6 @@ class UserModel{
 
     public function userLoggedIn() {
         if(isset($_SESSION['username']) && isset($_SESSION['password'])) {
-            //session_unset("loggedIn");
             return true;
         } else {
             return false;

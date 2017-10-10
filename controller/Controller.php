@@ -45,19 +45,16 @@ class Controller{
     private function setBody() {  
         $this->link = $this->loginView->showLinkRegister();
         $this->body = $this->loginView->generateLoginFormHTML();
-  
-        if($this->logInCookie()) {
+        if($this->loginView->clickRegisterLink()) {
+            $this->showViewRegister(); 
+        } else if($this->logInCookie()) {
             $this->showViewLogInCookie();
         } else if($this->stayLoggedInCookie()) {
             $this->showViewStayLoggedIn();
-        } else if($this->logIn()) {
+        } else if($this->logIn() || $this->userModel->userLoggedIn()) {
             $this->showViewLogIn();
-        } else if ($this->userModel->userLoggedIn()) { 
-            $this->link = $this->loginView->showLinkGuestbook(); 
-            $this->body = $this->guestBookView->generateGuestBookView();
-            $this->body .= $this->loginView->generateLogoutButtonHTML();
         } else if($this->logIn() == false) {
-            $this->showViewNotLoggedIn();
+            $this->showViewLoggedOut();
         }
 
         if($this->goToGuestbook()) {
@@ -66,20 +63,9 @@ class Controller{
             $this->body .= $this->loginView->generateLogoutButtonHTML();
         }
 
-        //varför funkar de ej?? back to logged in
-        if($this->userModel->userLoggedIn()) {
-            if($this->guestBookView->getBack()) {
-                $this->body = $this->loginView->generateLogoutButtonHTML();
-            }
-        }
-        
         if($this->logOut()) {
             $this->showViewLoggedOut();
         }
-        //FIXA else
-        if($this->loginView->clickRegisterLink()) {
-            $this->showViewRegister();
-        }  
         return $this->body;
     }
 
@@ -88,16 +74,22 @@ class Controller{
                 $textToFile = $this->guestBookView->getText();
                 $this->userModel->setText($textToFile);
                 if($this->userModel->checkText()){
-                    //skriva till fil
                     $this->userModel->writeToFile();
                     $this->link = $this->loginView->showLinkGuestbook();
                     $this->body = $this->guestBookView->generateGuestBookView();       
                     $this->body .= $this->loginView->generateLogoutButtonHTML();
                 } else {
-        
                     //katsa exception eller nått kanske
                 }
             }
+    }
+
+    private function notLoggedIn() {
+        if ($this->logOut() || $this->logIn() == false) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private function showViewLogInCookie(){
@@ -116,27 +108,22 @@ class Controller{
     }
 
     private function showViewLogIn(){
+        echo "mm";
+        
         $message = $this->userModel->getMessage();
+        echo $message;
         $this->loginView->setMessage($message);
         $this->link = $this->loginView->showLinkGuestbook();
         $this->body = $this->guestBookView->generateGuestBookView();       
         $this->body .= $this->loginView->generateLogoutButtonHTML();
-        //$this->getTextToGuessedBook();
-    }
-
-    private function showViewNotLoggedIn(){
-        $message = $this->userModel->getMessage();
-        $this->loginView->setMessage($message);
-        $this->link = $this->loginView->showLinkRegister(); 
-        $this->body = $this->loginView->generateLoginFormHTML();
     }
 
     private function showViewLoggedOut(){
-        //FIXA PÅ ANNAT SÄTT?
         $message = $this->userModel->getMessage();
         $this->loginView->setMessage($message);
-    
-        $this->loginView->unsetCookie();   
+        if($this->loginView->checkCookie()){
+            $this->loginView->unsetCookie();  
+        }  
         $this->link = $this->loginView->showLinkRegister(); 
         $this->body = $this->loginView->generateLoginFormHTML();
     }
