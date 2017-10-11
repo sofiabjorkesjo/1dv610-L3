@@ -1,6 +1,6 @@
 How to install?
-You need to create a UserData.php file in the model folder. In that file you need to create two private variables, 
-and then do two public methods for each variable. This methods should be named rightUsername() and rightPassword(). In the methods you set and return the right password and username. This file is not in github.
+You need to create a UserData.php file in the model folder. In that file you need to create a class named UserData. You need to create two private variables, 
+and then create two public methods for each variable. This methods should be named rightUsername() and rightPassword(). In the methods you set and return the right password and username. This file is not in github.
 
 How to test?
 You can test the application by visit: http://1dv610-l3.000webhostapp.com/
