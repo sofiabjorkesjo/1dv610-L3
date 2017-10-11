@@ -2,23 +2,22 @@
 
 require_once('UserData.php');
 
-class LoginModel{
+class LoginModel {
     
     private $username;
     private $password;
     private $message;
     private $userData;
-
-    
-    public function __construct(){
+  
+    public function __construct() {
        $this->userData = new UserData();
     }
 
-    public function setUsername($username){
+    public function setUsername($username) {
         $this->username = $username; 
     }
 
-    public function setPassword($password){
+    public function setPassword($password) {
         $this->password = $password;
     }
 
@@ -26,7 +25,7 @@ class LoginModel{
         return $this->message;
     }
 
-    public function emtyFields(){
+    public function emtyFields() {
         if($this->username == "" && $this->password == "") {
             $this->message = "Username is missing";
             return true;

@@ -9,7 +9,7 @@ require_once('model/LoginModel.php');
 require_once('model/GuestbookModel.php');
 require_once('model/RegisterModel.php');
 
-class Controller{
+class Controller {
 
     private $layoutView;
     private $dateTimeView;
@@ -59,7 +59,7 @@ class Controller{
             $this->link = $this->guestBookView->linkBackToLoggedIn();
             $this->body = $this->guestBookView->showGuestBookText();
             $this->body .= $this->loginView->generateLogoutButtonHTML();
-        } else if($this->goToGuestbook() && $this->loginModel->userLoggedIn() == false){
+        } else if($this->goToGuestbook() && $this->loginModel->userLoggedIn() == false) {
             $this->guestbookModel->messageNotLoggedIn();
             $message = $this->guestbookModel->getMessage();
             $this->guestBookView->setMessage($message);
@@ -73,16 +73,16 @@ class Controller{
         return $this->body;
     }
 
-    private function guestbookAndLogOut(){
+    private function guestbookAndLogOutView() {
         $this->body = $this->guestBookView->generateGuestBookView();       
         $this->body .= $this->loginView->generateLogoutButtonHTML();
     }
 
-    public function getTextToGuessedBook() {
+    private function getTextToGuessedBook() {
         if($this->guestBookView->sendText()) {
             $textToFile = $this->guestBookView->getText();
             $this->guestbookModel->setText($textToFile);
-            if($this->guestbookModel->checkText() == true){
+            if($this->guestbookModel->checkText() == true) {
                 $message = $this->guestbookModel->getMessage();
                 $this->loginView->setMessage($message);
                 $text = $this->guestbookModel->sendToController();
@@ -90,44 +90,44 @@ class Controller{
                 $textToFile = $this->guestBookView->textInTag();
                 $this->guestbookModel->writeToFile($textToFile);
                 $this->link = $this->loginView->showLinkGuestbook();
-                $this->guestbookAndLogOut();
-            } else if($this->guestbookModel->checkText() == false){
+                $this->guestbookAndLogOutView();
+            } else if($this->guestbookModel->checkText() == false) {
                 //katsa exception eller nått kanske
                 $message = $this->guestbookModel->getMessage();
                 $this->loginView->setMessage($message);
                 $this->link = $this->loginView->showLinkGuestbook();
-                $this->guestbookAndLogOut();
+                $this->guestbookAndLogOutView();
             }
         }
     }
 
-    private function showViewLogInCookie(){
+    private function showViewLogInCookie() {
         $this->loginModel->setCookieMessage();
         $message = $this->loginModel->getMessage();
         $this->loginView->setMessage($message);
         $this->link = $this->loginView->showLinkGuestbook();
-        $this->guestbookAndLogOut();
+        $this->guestbookAndLogOutView();
     }
 
-    private function showViewStayLoggedIn(){
+    private function showViewStayLoggedIn() {
         $this->loginModel->setSession();
         $message = $this->loginModel->getMessage();
         $this->loginView->setMessage($message);
         $this->link = $this->loginView->showLinkGuestbook();
-        $this->guestbookAndLogOut();
+        $this->guestbookAndLogOutView();
     }
 
-    private function showViewLogIn(){
+    private function showViewLogIn() {
         $message = $this->loginModel->getMessage();
         $this->loginView->setMessage($message);
         $this->link = $this->loginView->showLinkGuestbook();
-        $this->guestbookAndLogOut();
+        $this->guestbookAndLogOutView();
     }
 
-    private function showViewLoggedOut(){
+    private function showViewLoggedOut() {
         $message = $this->loginModel->getMessage();
         $this->loginView->setMessage($message);
-        if($this->loginView->checkCookie()){
+        if($this->loginView->checkCookie()) {
             $this->loginView->unsetCookie();  
         }  
         $this->link = $this->loginView->showLinkRegister(); 
@@ -135,7 +135,7 @@ class Controller{
         $this->body .= $this->loginView->generateLoginFormHTML();
     }
 
-    private function showViewRegister(){
+    private function showViewRegister() {
         if($this->register() == false) {
             $message = $this->registerModel->getMessage();
             $this->registerView->setMessageRegister($message);
@@ -192,8 +192,8 @@ class Controller{
         }
     }
 
-    private function logOut(){
-        if($this->loginView->clickLogOut()){
+    private function logOut() {
+        if($this->loginView->clickLogOut()) {
             $this->loginModel->loggOutUser();
             return true;
         } else {
@@ -201,7 +201,7 @@ class Controller{
         }
     }
 
-    private function getUsernameAndPasswordRegister(){
+    private function getUsernameAndPasswordRegister() {
         $usernameRegister = $this->registerView->getUsernameRegister();
         $passwordRegister = $this->registerView->getPasswordRegister();
         $passwordRepeat = $this->registerView->getPasswordRepeat();

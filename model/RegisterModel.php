@@ -2,7 +2,7 @@
 
 require_once('UserData.php');
 
-class RegisterModel{
+class RegisterModel {
 
     private $message;
     private $usernameRegister;
@@ -28,14 +28,6 @@ class RegisterModel{
 
     public function setPasswordRepeat($passwordRepeat) {
         $this->passwordRepeat = $passwordRepeat;
-    }
-
-    private function getUsernameLength() {
-        return strlen($this->usernameRegister);
-    }
-
-    private function getPasswordLength() {
-        return strlen($this->passwordRegister);
     }
 
     public function emtypFieldsRegister() {
@@ -99,5 +91,13 @@ class RegisterModel{
         } else {
             return false;
         }
+    }
+
+    private function getUsernameLength() {
+        return strlen($this->usernameRegister);
+    }
+
+    private function getPasswordLength() {
+        return strlen($this->passwordRegister);
     }
 }

@@ -16,15 +16,11 @@ class GuestbookModel {
         return $this->message;
     }
 
-    public function sendToController(){
+    public function sendToController() {
         return $this->text;
     }
 
-    private function getTextLength(){
-        return strlen($this->text);
-    }
-
-    public function messageNotLoggedIn(){
+    public function messageNotLoggedIn() {
         $this->message = "You need to be logged in to add a text to the guest book!";
     }
 
@@ -38,10 +34,14 @@ class GuestbookModel {
         }
     }
 
-    public function writeToFile($textToFile){
+    public function writeToFile($textToFile) {
         $file = "guestBook.txt";
         $guestBook = file_get_contents($file);
         $guestBook .= $textToFile;
         file_put_contents($file, $guestBook);
+    }
+
+    private function getTextLength() {
+        return strlen($this->text);
     }
 }

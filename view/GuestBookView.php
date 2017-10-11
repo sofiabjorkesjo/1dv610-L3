@@ -15,7 +15,6 @@ class GuestBookView {
         
     }
 
-
 	public function generateGuestBookView() {
         return '
             <h2>Write in guestbook</h2>	
@@ -41,7 +40,7 @@ class GuestBookView {
         $this->sendText = $text;
     }
 
-    public function textInTag(){
+    public function textInTag() {
         return "<p>" . $this->sendText . "</p>";
     }
 
@@ -59,7 +58,7 @@ class GuestBookView {
 
     }
 
-    public function showGuestBookText(){
+    public function showGuestBookText() {
         return '
             <p>' . $this->message .'</p>
             <h2>Guestbook</h2>
@@ -69,7 +68,7 @@ class GuestBookView {
         ';
     }
 
-    public function linkBackToLoggedIn(){
+    public function linkBackToLoggedIn() {
         return '
 		<a href="?">' . self::$linkNameBack . '</a>
 		';

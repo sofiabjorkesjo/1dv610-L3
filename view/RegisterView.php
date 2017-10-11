@@ -11,7 +11,6 @@ class RegisterView {
     private static $link = "Back to login";
     private $message;
 
-
     public function showLinkBack() {
         return '
         <a href="?">' . self::$link . '</a>
@@ -30,12 +29,6 @@ class RegisterView {
         $this->message = $message;
     }
 
-    /**
-	* Generate HTML code for register form
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
-
     public function generateRegisterForm() {
         return '   
         <h2>Register new user</h2>
@@ -44,7 +37,7 @@ class RegisterView {
                 <legend>Register a new user - Write username and password</legend>
                 <p id="' . self::$messageId  . '">' . $this->message . '</p>
                 <label for="' . self::$username . '">Username :</label>
-                <input type="text" size="20" name="' . self::$username . '" id="' . self::$username .'" value="' . $this->setValue  () .'">
+                <input type="text" size="20" name="' . self::$username . '" id="' . self::$username .'" value="' . $this->setValue() .'">
                 <br>
                 <label for="' . self::$password .'">Password :</label>
                 <input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value>
