@@ -92,7 +92,6 @@ class Controller {
                 $this->link = $this->loginView->showLinkGuestbook();
                 $this->guestbookAndLogOutView();
             } else if($this->guestbookModel->checkText() == false) {
-                //katsa exception eller nått kanske
                 $message = $this->guestbookModel->getMessage();
                 $this->loginView->setMessage($message);
                 $this->link = $this->loginView->showLinkGuestbook();

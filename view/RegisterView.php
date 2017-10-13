@@ -1,6 +1,5 @@
 <?php 
 
-
 class RegisterView {
 
     private static $username = "RegisterView::UserName";

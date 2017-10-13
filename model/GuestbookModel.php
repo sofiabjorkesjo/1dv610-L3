@@ -1,6 +1,7 @@
 <?php
 
 class GuestbookModel {
+    
     private $text;
     private $message;
 
